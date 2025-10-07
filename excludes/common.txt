@@ -1,0 +1,8 @@
+# ignore typical noise
+*.tmp
+*.log
+node_modules/
+.DS_Store
+.cache/
+.git/
+
