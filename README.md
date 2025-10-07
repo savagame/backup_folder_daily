@@ -35,7 +35,7 @@ cat >> /tmp/mycron.$$ <<'CRON'
 # Daily GitHub backup (01:30)
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-30 1 * * *  "$HOME/myworks/backup_folder_daily/scripts/backup.sh" "$HOME/projects/important" >> "$HOME/backup-git/logs/cron.out" 2>&1
+30 1 * * *  "$HOME/myworks/backup_folder_daily/scripts/backup.sh" "$HOME/projects/important" >> "$HOME/myworks/logs/cron.out" 2>&1
 CRON
 crontab /tmp/mycron.$$
 rm -f /tmp/mycron.$$
@@ -44,20 +44,20 @@ rm -f /tmp/mycron.$$
 ### smoke check:
 ```bash
 # run once now, then inspect repo + logs
-"$HOME/backup-git/backup_folder_daily/scripts/backup.sh" "$HOME/projects/important"
-tail -n 5 "$HOME/backup-git/logs/backup.log" || true
+"$HOME/myworks/backup_folder_daily/scripts/backup.sh" "$HOME/projects/important"
+tail -n 5 "$HOME/myworks/backup_folder_daily/logs/backup.log" || true
 ```
 
 ### Restore(quick)
 ```bash
 # choose an archive, verify checksum, and extract
-ARCHIVE=$(ls -1 ~/backup-git/backup_folder_daily/archives/$(hostname -s)/*/*/*.tar.gz | tail -n1)
+ARCHIVE=$(ls -1 ~/myworks/backup_folder_daily/archives/$(hostname -s)/*/*/*.tar.gz | tail -n1)
 sha256sum -c "${ARCHIVE}.sha256"
 mkdir -p ~/restore && tar -xzf "$ARCHIVE" -C ~/restore
 ```
 ### Optional: tag monthly snapshots
 ```bash
-cd ~/backup-git/backups-noob
+cd ~/myworks/backup_folder_daily
 git tag -a "monthly-$(date +%Y-%m)" -m "Monthly snapshot"
 git push --tags
 ```
